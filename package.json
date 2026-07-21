@@ -1,0 +1,36 @@
+{
+  "name": "illianaconsultinggrp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production --watch",
+    "dev": "webpack --mode=development --watch",
+    "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch",
+    "serve": "browser-sync start --proxy \"http://illianaconsultinggrp.local\" --files \"**/*.php, build/*.js, build/*.css, src/output.css\" --no-notify --no-open --no-ui --no-ghost-mode --watchOptions.ignored \"node_modules,.git,build/**/*.map\"",
+    "start": "concurrently \"npm run watch:css\" \"npm run dev\" \"npm run serve\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@glidejs/glide": "^3.4.1",
+    "@tailwindcss/cli": "^4.1.11",
+    "@wordpress/scripts": "*",
+    "aos": "^3.0.0-beta.6",
+    "axios": "^0.21.1",
+    "normalize.css": "^8.0.1",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.29.0",
+    "@babel/runtime": "^7.29.2",
+    "babel-loader": "^10.1.1",
+    "browser-sync": "^3.0.4",
+    "browser-sync-webpack-plugin": "^2.4.0",
+    "concurrently": "^9.2.0",
+    "css-loader": "^7.1.4",
+    "webpack-cli": "^7.0.2",
+    "webpack-manifest-plugin": "^6.0.1"
+  }
+}
