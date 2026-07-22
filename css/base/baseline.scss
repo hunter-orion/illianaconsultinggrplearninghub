@@ -1,0 +1,156 @@
+@use "../base/colors";
+
+
+  @font-face {                                                                                                                                         
+    font-display: swap;                                                                                                                                
+    font-family: 'Lora';                                                                                                                               
+    font-style: normal;
+    font-weight: 100 900;
+    src: url('../assets/Lora-VariableFont_wght.woff2') format('woff2-variations');
+  }
+
+@font-face {
+  font-display: swap; 
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url('../assets/LibreBaskerville-VariableFont_wght.woff2') format('woff2-variations');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  src: url('../assets/Roboto-VariableFont_wdth,wght.woff2') format('woff2-variations');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'Squartiqa4F';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../assets/Squartiqa4F.woff2') format('woff2');
+}
+
+@font-face {                                                                                               
+        font-display: swap;                                                                                      
+        font-family: 'Noah';                                                                                     
+        font-style: normal;                                                                                      
+        font-weight: normal;                                                                                     
+        src: url('../assets/noah-regular.woff2') format('woff2');                                                
+      }     
+
+
+
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: #eeeeee;             
+    font-family: 'Noah', sans-serif; 
+    position: relative;
+    letter-spacing: .7px;
+    scroll-behavior: smooth;
+overflow-x: clip;
+    background-color: black;
+}
+
+p {
+    
+}
+
+p,
+ul,
+ol {
+    margin: 0 0 0 0;
+}
+
+p,
+li,
+h3,
+h4 {
+    line-height: 1.65rem;
+}
+
+h3,
+h4 {       
+         font-family: 'Libre Baskerville', serif;
+         line-height: 2rem;
+
+}
+
+
+
+h1
+ {
+        font-family: 'Libre Baskerville', serif;
+                font-weight: bolder;
+letter-spacing: 6px;
+font-size: 60px;
+       
+}
+
+h2
+ {
+        font-family: 'Libre Baskerville', serif;
+                font-weight: bolder;
+letter-spacing: 6px;
+font-size: 50px;
+       
+}
+
+.type-text {
+}
+
+
+.container {
+
+}
+
+a {
+    text-decoration: none;
+
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.button {
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.page-not-found {
+    height: calc(100vh - 245px);
+}
+
+.main {
+    min-height: calc(100vh - 235px);;
+}
+
+@media (max-width: 800px) {  
+
+h1
+ {
+        font-family: 'Libre Baskerville', serif;
+                font-weight: bolder;
+letter-spacing: 6px;
+font-size: 40px;
+       
+}
+
+h2
+ {
+        font-family: 'Libre Baskerville', serif;
+                font-weight: bolder;
+letter-spacing: 6px;
+font-size: 35px;
+       
+}
+}

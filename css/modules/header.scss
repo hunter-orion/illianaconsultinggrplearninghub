@@ -1,0 +1,377 @@
+@use '../base/colors';
+.skip {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  color: black;
+   background-color: white;
+
+}
+.skip:focus {
+  position: absolute;
+  left: 0;
+  width: auto;
+  height: auto;
+  background-color: white;
+
+}
+
+.nav-top {
+    background-color: colors.$hero-background;
+    padding: 1rem;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+}
+
+// Set by the menu toggle (JS) — stops the page scrolling behind the open panel.
+body.nav-open {
+    overflow: hidden;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 6rem;
+padding-right: clamp(1rem, 15vw, 40%);
+// padding-right: 40%;
+}
+
+.nav-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 20px;
+    color: rgb(219, 219, 219);
+}
+
+.current-page {
+    color: colors.$text-current-page;
+}
+
+// Services dropdown — accessible disclosure.
+// Opens on hover (mouse) OR when the toggle button reports aria-expanded="true"
+// (set by keyboard/click via JS). High z-index keeps it above page sections
+// (e.g. the hero, which has its own stacking context).
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown:hover > .dropdown-menu,
+.dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+// Visible keyboard focus (WCAG 2.4.7). Pink reads on both the dark nav bar
+// and the white menu surface.
+.dropdown-toggle:focus-visible,
+.dropdown-menu a:focus-visible {
+    outline: 2px solid colors.$text-current-page;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.nav-button {
+    // color: colors.$text-current-page;
+    border: 2px solid colors.$text-current-page;
+    padding: 7px;
+    border-radius: 10px;
+    margin-left: 10px;
+    &:hover {
+        color: white!important;
+        background-color: #c4166f;
+        border-color: #c4166f;
+    }
+}
+
+
+.hamburger-menu {
+    display: none;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    padding: 0 30px 0 0;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    background: transparent;
+    border: none;
+    appearance: none;
+    font: inherit;
+    color: inherit;
+
+    &:focus-visible {
+        outline: 2px solid colors.$text-current-page;
+        outline-offset: 4px;
+    }
+
+    &.active {
+        transform: rotate(45deg);
+        
+    }
+
+    .line {
+        width: 35px;
+        height: 5px;
+        background-color: white;
+        margin: 6px 0;
+        transition: 0.4s;
+    }
+
+    &.active .line1 {
+        transform: rotate(-90deg) translate(-7px, 7px);
+        background-color: #E41C89;
+    }
+
+    &.active .line2 {
+        opacity: 0;
+    }
+
+    &.active .line3 {
+        transform: rotate(-175deg) translate(-7px, 15px);
+  background-color: #E41C89;    }
+}
+
+
+.nav-logo {width: 255px; height: auto;}
+
+.nav-items {
+    transition: color 0.2s ease;
+}
+
+.nav-items:hover { color: #E91E8C;}
+
+// Visible keyboard focus for the top-level nav links (WCAG 2.4.7),
+// matching the dropdown toggle/menu focus style. Pink reads on the dark bar.
+.nav-items:focus-visible {
+    outline: 2px solid colors.$text-current-page;
+    outline-offset: 4px;
+    border-radius: 4px;
+    color: colors.$text-current-page;
+}
+
+// Icons, chevron and the bottom Privacy link are part of the mobile menu only.
+// Hidden on desktop so the horizontal bar keeps its current text-only look.
+.nav-icon,
+.nav-chevron,
+.nav-mobile-footer { display: none; }
+
+@media (max-width: 1350px) {
+
+
+.nav-container {padding-right: 2rem;}
+
+}
+@media (max-width: 1100px) {
+    // Pin the header bar (logo + close button) to the top so it stays above
+    // the full-screen panel. Sticky keeps it in flow — no layout shift.
+    .nav-top {
+        position: sticky;
+        top: 0;
+        z-index: 1200;
+    }
+
+    .nav-container {
+        padding: 0 1.5rem;
+    }
+
+    .hamburger-menu {
+        display: block;
+        right: 1.5rem;
+        top: 1.5rem;
+        padding-right: 0;
+        z-index: 1300;
+        
+    }
+
+    // Logo sits above the panel so it (and the close button) stay visible.
+    .nav-logo {
+        position: relative;
+        z-index: 1300;
+    }
+
+    // Full-screen slide-in panel.
+    .nav-list {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100vh;
+        max-width: none;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 120px 1.5rem 2rem;
+        background: colors.$hero-background;
+        overflow-y: auto;
+        z-index: 1100;
+        margin-top: 1rem;
+        // Hidden state — slide off to the right.
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.4s ease-in-out, opacity 0.3s ease, visibility 0.3s;
+    }
+
+    // Gradient underline directly below the header bar.
+    .nav-list::before {
+        content: "";
+        position: fixed;
+        top: 120px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(to right, #E41C89, #C084FC, #580D8B);
+    }
+
+    .nav-list.show {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-items {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+        padding: 1.25rem 0.25rem;
+        font-size: 1.35rem;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    // Active item (and its currentColor icon) stays pink over the white default.
+    .nav-items.current-page {
+        color: colors.$text-current-page;
+    }
+
+    .nav-icon {
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        svg {
+            width: 26px;
+            height: 26px;
+        }
+    }
+
+    // Services row + its mobile sub-menu (rendered in-flow, not as a popover).
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-toggle {
+        justify-content: flex-start;
+    }
+
+    .nav-chevron {
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+        transition: transform 0.3s ease;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .dropdown-toggle[aria-expanded="true"] .nav-chevron {
+        transform: rotate(180deg);
+    }
+
+    // Collapsed: fully removed from flow (display:none) so it takes no space.
+    // Driven only by aria-expanded — the desktop hover rule sets opacity/
+    // visibility but never display, so a sticky touch-hover can't reveal it.
+    .dropdown-menu {
+        position: static;
+        display: none;
+        opacity: 1;
+        visibility: visible;
+        width: 100%;
+        padding: 0;
+        transform: none;
+
+        > div {
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        a {
+            color: #cfcfcf;
+            padding: 0.85rem 0.25rem 0.85rem 3.6rem;
+            font-size: 1.1rem;
+        }
+
+        // Active sub-page glows the same pink/purple as the top-level nav items.
+        a.current-page {
+            color: colors.$text-current-page;
+        }
+    }
+
+    .dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
+        display: block;
+    }
+
+    // Client Login — full-width gradient button.
+    .nav-button {
+        justify-content: center;
+        margin: 1.5rem 0 0;
+        padding: 1rem;
+        border: none;
+        border-bottom: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 600;
+        background: linear-gradient(to right, #7B2FF7, #E91E8C, #FF4FA3);
+
+        &:hover {
+            color: #fff!important;
+            background: linear-gradient(to right, #7B2FF7, #E91E8C, #FF4FA3);
+        }
+    }
+
+    // Bottom row pinned to the foot of the panel.
+    .nav-mobile-footer {
+        display: flex;
+        margin-top: auto;
+        padding-top: 1.5rem;
+
+        a {
+            color: #9aa0b3;
+            font-size: 1.05rem;
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .nav-logo {
+        width: 180px;
+    }
+
+    // Smaller logo → shorter header bar, so pull the underline back up.
+    .nav-list::before {
+        top: 86px;
+    }
+        .nav-list {
+        padding: 96px 1.5rem 2rem;
+        }
+}
