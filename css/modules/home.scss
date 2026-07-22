@@ -1,0 +1,279 @@
+@use "../base/colors";
+
+$card-bg: #0f0d1f;
+$card-border: rgba(255, 255, 255, 0.08);
+$card-border-hover: rgba(217, 101, 162, 0.55);
+$subtext: #b79bea;
+
+.hub-hero,
+.hub-continue,
+.hub-programs {
+    padding-left: 6rem;
+    padding-right: 6rem;
+}
+
+.hub-hero {
+    padding-top: 3.5rem;
+    padding-bottom: 2.5rem;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.hub-eyebrow {
+    font-size: 1.3rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $subtext;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.hub-hero h1 {
+    margin: 0 0 0.5rem;
+}
+
+.hub-hero-sub {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 1.4rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0;
+}
+
+.hub-continue {
+    max-width: 1180px;
+    margin: 0 auto 3.5rem;
+}
+
+.hub-continue-inner {
+    background: $card-bg;
+    border: 1px solid $card-border;
+    border-radius: 10px;
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #FC0BAB, #7C09F7);
+    }
+}
+
+.hub-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $subtext;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+
+
+.hub-continue-text h2 {
+    font-size: 1.4rem;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.4rem;
+}
+
+.hub-meta {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+}
+
+.hub-progress-track {
+    width: 340px;
+    max-width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.hub-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FC0BAB, #7C09F7);
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+
+
+.hub-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(
+        90deg,
+  #FC0BAB
+, #7C09F7
+    );    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.4rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.88;
+        color: #fff;
+    }
+}
+
+.hub-btn-outline {
+    background: transparent;
+    border: 1.5px solid $card-border-hover;
+
+    &:hover {
+        background: linear-gradient(90deg, colors.$text-gradient-left, colors.$text-gradient-right);
+        border-color: transparent;
+        opacity: 1;
+    }
+}
+
+.hub-programs {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-bottom: 5.5rem;
+}
+
+.hub-programs h3 {
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 1.4rem;
+}
+
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+.hub-card {
+    background: $card-bg;
+    border: 1px solid $card-border;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        border-color: $card-border-hover;
+    }
+
+    &.locked {
+        opacity: 0.6;
+    }
+}
+
+.hub-card-art {
+    height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        linear-gradient(135deg, rgba(124, 9, 247, 0.35), rgba(252, 11, 171, 0.28)),
+        repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 60px);
+
+    svg {
+        width: 34px;
+        height: 34px;
+        stroke: #fff;
+        opacity: 0.85;
+    }
+}
+
+.hub-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    &.active {
+        background: rgba(233, 24, 84, 0.9);
+        border-color: transparent;
+    }
+}
+
+.hub-card-body {
+    padding: 1.25rem 1.4rem 1.4rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.hub-card-body h4 {
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.5rem;
+    line-height: 1.25;
+}
+
+.hub-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 1.1rem;
+    flex: 1;
+    color: #AA7EDD;
+}
+
+@media (max-width: 1350px) {
+    .hub-hero,
+    .hub-continue,
+    .hub-programs {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .hub-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .hub-hero,
+    .hub-continue,
+    .hub-programs {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+    .hub-continue-text
+{
+    width: 100%;
+}
+}
+
+@media (max-width: 600px) {
+    .hub-grid {
+        grid-template-columns: 1fr;
+    }
+}

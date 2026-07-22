@@ -58,22 +58,10 @@ function illiana_files()
     // Icons are inline SVG (see inc/icons.php / illiana_icon()) — no
     // icon-font or icon-script CDN requests needed on any page.
     // ---------------------------------------------------------------
-    // Per-page bundles. Each page loads exactly ONE entry from /build.
-    // Map page → webpack entry name (defined in webpack.config.js).
+    // Single sitewide bundle from /build (src/index.js).
     // ---------------------------------------------------------------
-    $main_handle = null;
+    $main_handle = illiana_enqueue_entry('home-v2', []);
 
-
-        if (is_home()) {
-        $main_handle = illiana_enqueue_entry('home-v2', []);
-    }
-
-    // Workforce / training pages → training bundle
-    if (!is_home()) {
-        $main_handle = illiana_enqueue_entry('training-v2', []);
-    }
-
-    // Localize once for whichever entry actually got enqueued.
     if ($main_handle && wp_script_is($main_handle, 'enqueued')) {
         wp_localize_script($main_handle, 'illianaData', [
             'root_url' => get_site_url(),
@@ -126,3 +114,8 @@ add_filter('rest_endpoints', function( $endpoints ) {
     }
     return $endpoints;
 });
+
+function custom_theme_learndash_support() {
+    add_theme_support( 'learndash' );
+}
+add_action( 'after_setup_theme', 'custom_theme_learndash_support' );
