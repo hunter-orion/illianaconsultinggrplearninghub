@@ -113,8 +113,6 @@ while ( have_posts() ) :
       </div>
     </div>
 
-    <div id="courses-frontend-app"></div>
-
     <?php the_content(); ?>
 
   </div>
