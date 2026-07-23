@@ -1,6 +1,7 @@
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -11,14 +12,22 @@ module.exports = (env, argv) => {
         ? 'style-[name].[contenthash].css'
         : 'style-[name].css'
     }),
-    new WebpackManifestPlugin({ fileName: 'asset-manifest.json' })
+    new WebpackManifestPlugin({ fileName: 'asset-manifest.json' }),
+    // Only touches entries that import '@wordpress/*' (i.e. courses-admin) —
+    // maps those imports to the wp.* globals instead of bundling them, and
+    // emits build/courses-admin.asset.php with the dependency handles +
+    // version that functions.php needs for wp_enqueue_script(). Entries with
+    // no '@wordpress/*' imports (courses-frontend) still get an asset.php,
+    // it's just an empty dependency array — harmless, and left unused there.
+    new DependencyExtractionWebpackPlugin()
   ];
 
   return {
     mode: isProduction ? 'production' : 'development',
     entry: {
       'home-v2': './src/index.js',
-
+      'courses-admin': './src/courses-admin.js',
+      'courses-frontend': './src/courses-frontend.js'
     },
     output: {
       path: path.resolve(__dirname, 'build'),

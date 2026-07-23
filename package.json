@@ -25,6 +25,10 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.29.0",
     "@babel/runtime": "^7.29.2",
+    "@wordpress/block-editor": "^16.0.0",
+    "@wordpress/blocks": "^15.24.0",
+    "@wordpress/components": "^37.0.0",
+    "@wordpress/data": "^10.51.0",
     "babel-loader": "^10.1.1",
     "browser-sync": "^3.0.4",
     "browser-sync-webpack-plugin": "^2.4.0",

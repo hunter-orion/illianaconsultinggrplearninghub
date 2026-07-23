@@ -119,3 +119,78 @@ function custom_theme_learndash_support() {
     add_theme_support( 'learndash' );
 }
 add_action( 'after_setup_theme', 'custom_theme_learndash_support' );
+
+// Course pages render their own layout via single-sfwd-courses.php and expect
+// the_content() to return the raw block content. Without this, LearnDash's
+// `the_content` filter (SFWD_CPT_Instance::template_content()) replaces it
+// with the full ld30 course shell (info bar, progress bar, [course_content]
+// shortcode) wrapped in .learndash-wrapper/.learndash-shortcode-wrap markup.
+function illiana_disable_learndash_course_content_filter() {
+    global $sfwd_lms;
+
+    if ( is_singular( 'sfwd-courses' ) && isset( $sfwd_lms->post_types['sfwd-courses'] ) ) {
+        $sfwd_lms->post_types['sfwd-courses']->content_filter_control( false );
+    }
+}
+add_action( 'wp', 'illiana_disable_learndash_course_content_filter' );
+
+// Registers the course-content Gutenberg blocks (editor-only bundle built
+// from src/courses-admin.js). Dependencies + version come from the
+// courses-admin.asset.php file DependencyExtractionWebpackPlugin generates.
+function illiana_enqueue_course_blocks_editor_assets() {
+    $asset_path = get_theme_file_path( '/build/courses-admin.asset.php' );
+
+    if ( ! file_exists( $asset_path ) ) {
+        return;
+    }
+
+    $asset = include $asset_path;
+
+    wp_enqueue_script(
+        'illiana-course-blocks',
+        get_theme_file_uri( '/build/courses-admin.js' ),
+        $asset['dependencies'],
+        $asset['version'],
+        true
+    );
+}
+add_action( 'enqueue_block_editor_assets', 'illiana_enqueue_course_blocks_editor_assets' );
+
+// Frontend JS/CSS for the course page (src/courses-frontend.js, which pulls
+// in css/courses.scss) — only loaded on single course pages, not sitewide.
+// The JS side renders React (createRoot), so — unlike the editor, which
+// always has React loaded regardless — this page needs the real
+// react/react-dom/etc. script handles declared as dependencies, which is
+// why this reads courses-frontend.asset.php instead of using the plain
+// manifest-based illiana_enqueue_entry() helper for the JS half.
+function illiana_enqueue_course_frontend_assets() {
+    if ( ! is_singular( 'sfwd-courses' ) ) {
+        return;
+    }
+
+    $manifest = illiana_asset_manifest();
+    if ( isset( $manifest['courses-frontend.css'] ) ) {
+        wp_enqueue_style(
+            'illiana-courses-frontend',
+            get_theme_file_uri( '/build/' . $manifest['courses-frontend.css'] ),
+            [],
+            null
+        );
+    }
+
+    $asset_path = get_theme_file_path( '/build/courses-frontend.asset.php' );
+    if ( ! file_exists( $asset_path ) ) {
+        return;
+    }
+
+    $asset = include $asset_path;
+
+    wp_enqueue_script(
+        'illiana-courses-frontend',
+        get_theme_file_uri( '/build/courses-frontend.js' ),
+        $asset['dependencies'],
+        $asset['version'],
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'illiana_enqueue_course_frontend_assets' );
