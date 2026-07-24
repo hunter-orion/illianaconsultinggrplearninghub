@@ -170,6 +170,7 @@ function CourseDiscussion( props ) {
 
 		setPosting( true );
 		setError( '' );
+		console.log(window.illianaCoursesData.restUrl)
 
 		fetch( window.illianaCoursesData.restUrl + 'comments', {
 			method: 'POST',
