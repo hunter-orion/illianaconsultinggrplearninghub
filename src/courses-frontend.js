@@ -47,7 +47,7 @@ function CourseSyllabus( props ) {
 				<h3>Meet Your Instructor</h3>
 				<div className="instructor-card">
 					<div className="avatar">{ props.instructorInitials }</div>
-					<div>
+					<div className="instructor-card-text">
 						<h4>{ props.instructorName }</h4>
 						<div className="cred">{ props.instructorCred }</div>
 						<p>{ props.instructorBio }</p>
@@ -87,6 +87,33 @@ function CourseSyllabus( props ) {
 	);
 }
 
+// "Illiana consulting" events are always scheduled in Eastern time, and the
+// datetime-local inputs in the block editor store naive local values (no
+// timezone) — so ctz is hardcoded here to match rather than trusting the
+// visitor's own timezone, which google.calendar/render would otherwise
+// silently assume.
+const EVENT_TIMEZONE = 'America/New_York';
+
+// datetime-local gives "YYYY-MM-DDTHH:mm" — Google's dates= param wants that
+// same naive local value (paired with ctz above) as "YYYYMMDDTHHmmss".
+function toGCalDateTime( localDateTime ) {
+	if ( ! localDateTime ) {
+		return '';
+	}
+	return localDateTime.replace( /[-:]/g, '' ) + '00';
+}
+
+function buildGoogleCalendarUrl( { title, start, end, location } ) {
+	const params = new URLSearchParams( {
+		action: 'TEMPLATE',
+		text: title || '',
+		dates: `${ toGCalDateTime( start ) }/${ toGCalDateTime( end || start ) }`,
+		location: location || '',
+		ctz: EVENT_TIMEZONE,
+	} );
+	return `https://calendar.google.com/calendar/render?${ params.toString() }`;
+}
+
 function CourseDates( props ) {
 	const dates = props.dates || [];
 	if ( ! dates.length ) {
@@ -95,19 +122,33 @@ function CourseDates( props ) {
 
 	return (
 		<>
-			{ dates.map( ( d, i ) => (
-				<div className="date-row" key={ i }>
-					<div className="date-box">
-						<div className="m">{ d.month }</div>
-						<div className="d">{ d.day }</div>
+			{ dates.map( ( d, i ) => {
+				const startDate = d.start ? new Date( d.start ) : null;
+				const endDate = d.end ? new Date( d.end ) : null;
+				const month = startDate ? startDate.toLocaleString( 'en-US', { month: 'short' } ).toUpperCase() : '';
+				const day = startDate ? startDate.getDate() : '';
+				const timeLabel = startDate
+					? startDate.toLocaleTimeString( 'en-US', { hour: 'numeric', minute: '2-digit' } )
+						+ ( endDate ? ` – ${ endDate.toLocaleTimeString( 'en-US', { hour: 'numeric', minute: '2-digit' } ) }` : '' )
+					: '';
+				const sub = [ timeLabel, d.location ].filter( Boolean ).join( ' · ' );
+
+				return (
+					<div className="date-row" key={ i }>
+						<div className="date-box">
+							<div className="m">{ month }</div>
+							<div className="d">{ day }</div>
+						</div>
+						<div className="date-info">
+							<div className="title">{ d.title }</div>
+							<div className="sub">{ sub }</div>
+						</div>
+						<a className="cal-btn" href={ buildGoogleCalendarUrl( d ) } target="_blank" rel="noopener noreferrer">
+							+ Calendar
+						</a>
 					</div>
-					<div className="date-info">
-						<div className="title">{ d.title }</div>
-						<div className="sub">{ d.sub }</div>
-					</div>
-					<button className="cal-btn">+ Calendar</button>
-				</div>
-			) ) }
+				);
+			} ) }
 		</>
 	);
 }

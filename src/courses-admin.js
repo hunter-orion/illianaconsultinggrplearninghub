@@ -155,13 +155,23 @@ registerBlockType( 'illiana/course-panels', {
 					label="Key Dates"
 					items={ dates }
 					onChange={ ( next ) => setAttributes( { dates: next } ) }
-					newRow={ { month: '', day: '', title: '', sub: '' } }
+					newRow={ { title: '', start: '', end: '', location: '' } }
 					renderRow={ ( row, index, updateRow ) => (
 						<>
-							<TextControl label="Month" value={ row.month } onChange={ ( month ) => updateRow( index, { month } ) } />
-							<TextControl label="Day" value={ row.day } onChange={ ( day ) => updateRow( index, { day } ) } />
 							<TextControl label="Title" value={ row.title } onChange={ ( title ) => updateRow( index, { title } ) } />
-							<TextControl label="Time / Details" value={ row.sub } onChange={ ( sub ) => updateRow( index, { sub } ) } />
+							<TextControl
+								label="Start"
+								type="datetime-local"
+								value={ row.start }
+								onChange={ ( start ) => updateRow( index, { start } ) }
+							/>
+							<TextControl
+								label="End"
+								type="datetime-local"
+								value={ row.end }
+								onChange={ ( end ) => updateRow( index, { end } ) }
+							/>
+							<TextControl label="Location" value={ row.location } onChange={ ( location ) => updateRow( index, { location } ) } />
 						</>
 					) }
 				/>
@@ -169,7 +179,7 @@ registerBlockType( 'illiana/course-panels', {
 				{ /* DISCUSSION — not editable yet, comments coming later */ }
 				<div style={ sectionStyle }>
 					<h3>Discussion</h3>
-					<p>Static placeholder for now — comment functionality not built yet.</p>
+					<p>Static placeholder view on front end.</p>
 				</div>
 
 				{ /* TEMPLATES */ }

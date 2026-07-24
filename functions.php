@@ -105,6 +105,27 @@ function illiana_get_user_display_name( $user ) {
     return $user->first_name ?: $user->display_name;
 }
 
+// Two-letter avatar badge for the header's user menu — first + last initial,
+// falling back to just the first initial (or the first letter of display_name)
+// when last_name isn't set.
+function illiana_get_user_initials( $user ) {
+    if ( ! $user instanceof WP_User ) {
+        return '';
+    }
+
+    $first = mb_substr( $user->first_name, 0, 1 );
+    $last  = mb_substr( $user->last_name, 0, 1 );
+
+    if ( $first && $last ) {
+        return mb_strtoupper( $first . $last );
+    }
+    if ( $first ) {
+        return mb_strtoupper( $first );
+    }
+
+    return mb_strtoupper( mb_substr( $user->display_name, 0, 1 ) );
+}
+
 function illiana_files()
 {
     // Theme stylesheet (holds the per-page font-size floors). Versioned with the
@@ -170,6 +191,36 @@ add_filter('intermediate_image_sizes_advanced', 'illiana_remove_default_image_si
 
 
 add_filter('xmlrpc_enabled', '__return_false');
+
+// Disable public self-registration. The option filter covers register_new_user()'s
+// own check (used by wp-login.php and any plugin that respects it); the login_init
+// redirect is defense-in-depth for anyone hitting wp-login.php?action=register directly.
+add_filter( 'option_users_can_register', '__return_false' );
+
+function illiana_block_registration_page() {
+    if ( isset( $_GET['action'] ) && $_GET['action'] === 'register' ) {
+        wp_safe_redirect( home_url( '/' ) );
+        exit;
+    }
+}
+add_action( 'login_init', 'illiana_block_registration_page' );
+
+// Subscribers (and any other role without real dashboard access) have no
+// reason to see wp-admin — send them to the homepage instead. Gated on
+// edit_posts rather than the "subscriber" role by name so it also covers
+// any other low-privilege/custom role, and skips AJAX/REST requests since
+// those route through wp-admin too but aren't actual dashboard page loads.
+function illiana_redirect_subscribers_from_admin() {
+    if ( ! is_admin() || wp_doing_ajax() ) {
+        return;
+    }
+
+    if ( is_user_logged_in() && ! current_user_can( 'edit_posts' ) ) {
+        wp_safe_redirect( home_url( '/' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'illiana_redirect_subscribers_from_admin' );
 
 add_filter('rest_endpoints', function( $endpoints ) {
     if ( isset( $endpoints['/wp/v2/users'] ) ) {

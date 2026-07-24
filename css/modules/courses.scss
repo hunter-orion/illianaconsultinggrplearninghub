@@ -21,10 +21,17 @@ body.ld-course-home{
   h1{font-size:3rem;}
   h2{font-size:2rem;}
 
-  .app{display:flex;min-height:100vh;}
+  .app{display:flex;min-height:100vh;
+     @media (max-width:900px){flex-direction: column;}
+  }
+
+  
 
   /* ---------------- SIDEBAR ---------------- */
-  .sidebar{width:300px;flex-shrink:0;background:var(--sidebar-bg);border-right:1px solid rgba(255,255,255,0.06);height:100vh;position:sticky;top:0;overflow-y:auto;}
+  .sidebar{width:300px;flex-shrink:0;background:var(--sidebar-bg);border-right:1px solid rgba(255,255,255,0.06);height:100vh;position:sticky;top:0;overflow-y:auto;
+       @media (max-width:900px){width: 100%; position: static; height: fit-content;}
+
+  }
   .sb-header{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.06);}
   .sb-logo{height:24px;margin-bottom:16px;}
   .sb-back{font-size:18px;color:rgba(255,255,255,0.5);text-decoration:none;display:inline-block;margin-bottom:12px;}
@@ -90,7 +97,11 @@ body.ld-course-home{
   }
   .hero-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
   .eyebrow{font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:var(--subtext);margin-bottom:10px;}
-  .hero h1{font-weight:700;font-size:3rem;margin:0;}
+  .hero h1{font-weight:700;font-size:3rem;margin:0;
+       @media (max-width:900px){font-size: 2rem;}
+        @media (max-width:350px){font-size: 1.3rem;}
+
+  }
   .instructor-chip{
     display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
     border-radius:100px;padding:6px 16px 6px 6px;
@@ -106,6 +117,8 @@ body.ld-course-home{
   /* tabs (populated by course content block) */
   .tab-bar{
     display:flex;gap:4px;max-width:920px;margin:0 auto;padding:0 40px;border-bottom:1px solid rgba(255,255,255,0.08);
+     @media (max-width:960px){flex-direction: column;}
+  
   }
   .tab{
     padding:14px 18px;font-size:18px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;
@@ -119,7 +132,9 @@ body.ld-course-home{
 
     &.active{display:block;}
   }
-  .panel-inner{max-width:920px;margin:0 auto;padding:30px 40px 80px;}
+  .panel-inner{max-width:920px;margin:0 auto;padding:30px 40px 80px;
+      @media (max-width:900px){padding: 30px 20px 80px;}
+  }
   .dark-panel{background:#05040a;}
   .light-panel{
     background:#FAF9FF;color:#333;
@@ -204,6 +219,12 @@ body.ld-course-home{
   .instructor-card{
     background:var(--card-bg);border:1px solid var(--border-faint);border-radius:10px;padding:22px;
     display:flex;gap:16px;align-items:flex-start;margin-bottom:10px;
+         @media (max-width:900px){flex-direction: column; align-items: center;}
+
+
+         .instructor-card-text {
+              @media (max-width:900px){text-align: center;}
+         }
 
     .avatar{width:56px;height:56px;font-size:20px;flex-shrink:0;}
     h4{font-size:18px;margin:0 0 4px;}
@@ -279,15 +300,21 @@ body.ld-course-home{
 
     .avatar{width:34px;height:34px;font-size:18px;flex-shrink:0;}
 
-    &.instructor{background:rgba(124,9,247,0.08);border-left:2px solid var(--grad-end);padding:10px 14px;border-radius:0 8px 8px 0;margin-left:-14px;}
+    &.instructor{background:rgba(124,9,247,0.08);border-left:2px solid var(--grad-end);padding:10px 14px;border-radius:0 8px 8px 0;margin-left:-14px;
+    @media (max-width:900px){flex-direction: column; align-items: center;}
+    }
   }
-  .post-body{flex:1;}
+  .post-body{flex:1;
+  @media (max-width:900px){display: flex; align-items: center; flex-direction: column;}}
   .post-head{
     display:flex;align-items:center;gap:8px;margin-bottom:4px;
 
+    @media (max-width:900px){ text-align: center; margin-bottom:1rem ;}
+
+
     .name{font-size:18px;font-weight:700;}
     .tag{font-size:18px;background:linear-gradient(90deg,var(--grad-start),var(--grad-end));padding:2px 7px;border-radius:100px;font-weight:700;}
-    .time{font-size:18px;color:rgba(255,255,255,0.35);}
+    .time{font-size:18px;color:rgba(48, 48, 48, 0.35);}
   }
   .post-text{font-size:18px;color:rgba(255,255,255,0.75);line-height:1.6;}
 
