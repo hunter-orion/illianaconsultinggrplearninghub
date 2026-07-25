@@ -22,7 +22,6 @@
     background-color: colors.$hero-background;
     padding: 1rem;
     width: 100%;
-    position: sticky;
     top: 0;
     z-index: 1200;
 }
@@ -69,18 +68,39 @@
     color: colors.$text-current-page;
 }
 
-// Log In button (logged-out state).
+// Log In / Register buttons (logged-out state). .nav-button is the solid
+// "main" action (Log In); .nav-button-ghost is the same shape/size but
+// outline-only, for the secondary action (Register) next to it.
 .nav-button {
     display: inline-flex;
     align-items: center;
     border: 2px solid colors.$text-current-page;
+    background-color: colors.$text-current-page;
+    color: white;
     padding: 7px 16px;
     border-radius: 10px;
 
     &:hover {
         color: white !important;
+        opacity: 0.85;
+    }
+}
+
+.nav-button-ghost {
+    background-color: transparent;
+    color: inherit;
+
+    // Same pink as Home's active state (.current-page) — needs the extra
+    // specificity here since .nav-button-ghost's own color:inherit would
+    // otherwise win the tie against the plain .current-page rule above.
+    &.current-page {
+        color: colors.$text-current-page;
+    }
+
+    &:hover {
+        color: white !important;
         background-color: colors.$text-current-page;
-        border-color: colors.$text-current-page;
+        opacity: 1;
     }
 }
 
@@ -153,7 +173,7 @@
     height: 34px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: linear-gradient(135deg, colors.$text-gradient-left, colors.$text-gradient-right);
+    background: linear-gradient(90deg, #FC0BAB, #7C09F7);
     color: white;
     font-size: 13px;
     font-weight: 600;

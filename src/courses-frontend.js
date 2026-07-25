@@ -12,7 +12,6 @@ window.showTab = function ( id, el ) {
 	document.getElementById( id ).classList.add( 'active' );
 	el.classList.add( 'active' );
 };
-
 function CourseAnnouncements( props ) {
 	const items = props.announcements || [];
 	if ( ! items.length ) {

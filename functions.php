@@ -3,6 +3,18 @@
 // callback, and the discussion-thread data it pulls in.
 require_once get_theme_file_path( '/inc/courseTabs.php' );
 
+// Reusable "all courses" catalog grid (front-page.php + page-registration.php).
+require_once get_theme_file_path( '/inc/courseCatalog.php' );
+
+// "Access Code" custom post type (wp-admin UI for creating/managing codes).
+// Loaded before registration.php since illiana_redeem_access_code() there
+// queries this post type.
+require_once get_theme_file_path( '/inc/accessCodes.php' );
+
+// Registration page form handlers (signup, profile edit, code redemption,
+// password reset) — see page-registration.php.
+require_once get_theme_file_path( '/inc/registration.php' );
+
 function illiana_asset_manifest()
 {
     static $manifest = null;
@@ -208,10 +220,14 @@ add_action( 'login_init', 'illiana_block_registration_page' );
 // Subscribers (and any other role without real dashboard access) have no
 // reason to see wp-admin — send them to the homepage instead. Gated on
 // edit_posts rather than the "subscriber" role by name so it also covers
-// any other low-privilege/custom role, and skips AJAX/REST requests since
-// those route through wp-admin too but aren't actual dashboard page loads.
+// any other low-privilege/custom role, and skips AJAX/REST/admin-post.php
+// requests since those route through wp-admin too but aren't actual
+// dashboard page loads — subscribers legitimately POST to admin-post.php
+// from the registration page (see inc/registration.php).
 function illiana_redirect_subscribers_from_admin() {
-    if ( ! is_admin() || wp_doing_ajax() ) {
+    global $pagenow;
+
+    if ( ! is_admin() || wp_doing_ajax() || 'admin-post.php' === $pagenow ) {
         return;
     }
 

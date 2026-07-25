@@ -54,6 +54,10 @@
                        class="nav-items nav-button transition-colors">
                         Log In
                     </a>
+                    <a href="<?php echo esc_url( home_url( '/registration' ) ); ?>"
+                       class="nav-items nav-button nav-button-ghost transition-colors<?php echo is_page( 'registration' ) ? ' current-page' : ''; ?>">
+                        Register
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

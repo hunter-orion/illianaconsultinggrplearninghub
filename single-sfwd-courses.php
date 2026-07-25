@@ -71,17 +71,9 @@ while ( have_posts() ) :
           <div class="lesson-row">
               <a class="lesson-link" href="<?php echo esc_url( learndash_get_step_permalink( $lesson_id, $course_id ) ); ?>">
                   <span class="lesson-name"><?php echo esc_html( get_the_title( $lesson_id ) ); ?></span>
-                  <?php if ( ! empty( $quizzes ) ) : ?>
-                      <span class="lesson-sub"><?php echo count( $quizzes ); ?> Quiz<?php echo count( $quizzes ) > 1 ? 'zes' : ''; ?></span>
-                  <?php endif; ?>
+             
               </a>
-              <?php if ( ! empty( $topics ) ) : ?>
-                  <div class="topic-list">
-                      <?php foreach ( $topics as $topic ) : ?>
-                          <a class="topic-row" href="<?php echo esc_url( learndash_get_step_permalink( $topic->ID, $course_id ) ); ?>"><?php echo esc_html( $topic->post_title ); ?></a>
-                      <?php endforeach; ?>
-                  </div>
-              <?php endif; ?>
+        
           </div>
           <?php
       endforeach;

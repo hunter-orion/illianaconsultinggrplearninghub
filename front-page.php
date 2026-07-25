@@ -47,15 +47,6 @@ if ( $is_logged_in && function_exists( 'learndash_get_last_active_course' ) ) {
     }
 }
 
-// All published courses, flagged with the current user's enrollment status.
-$all_courses      = get_posts( array(
-    'post_type'      => 'sfwd-courses',
-    'post_status'    => 'publish',
-    'posts_per_page' => -1,
-    'orderby'        => 'menu_order title',
-    'order'          => 'ASC',
-) );
-$can_check_access = function_exists( 'sfwd_lms_has_access' ) && function_exists( 'learndash_course_progress' );
 ?>
 
 <main id="main">
@@ -95,56 +86,10 @@ $can_check_access = function_exists( 'sfwd_lms_has_access' ) && function_exists(
 </section>
 <?php endif; ?>
 
-<section class="hub-programs">
-    <h3>Your Programs</h3>
-    <div class="hub-grid">
-        <?php foreach ( $all_courses as $course ) :
-            $course_id = $course->ID;
-            $enrolled  = $is_logged_in && $can_check_access && sfwd_lms_has_access( $course_id, $user_id );
-
-            $status_label = 'Not Enrolled';
-            $status_class = '';
-
-            if ( $enrolled ) {
-                $course_progress = learndash_course_progress( array(
-                    'user_id'   => $user_id,
-                    'course_id' => $course_id,
-                    'array'     => true,
-                ) );
-                if ( 100 <= (int) $course_progress['percentage'] ) {
-                    $status_label = 'Completed';
-                } elseif ( 0 < (int) $course_progress['percentage'] ) {
-                    $status_label = 'In Progress';
-                    $status_class = 'active';
-                } else {
-                    $status_label = 'Enrolled';
-                }
-            }
-
-            $excerpt = get_field( 'course_description', $course_id );
-        ?>
-        <div class="hub-card<?php echo $enrolled ? '' : ' locked'; ?>">
-            <div class="hub-card-art">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <span class="hub-status<?php echo $status_class ? ' ' . esc_attr( $status_class ) : ''; ?>"><?php echo esc_html( $status_label ); ?></span>
-            </div>
-            <div class="hub-card-body">
-                <h4><?php echo esc_html( get_the_title( $course_id ) ); ?></h4>
-                <?php if ( $excerpt ) : ?>
-                    <div class="hub-card-desc text-[#AA7EDD]"><?php echo esc_html( $excerpt ); ?></div>
-                <?php endif; ?>
-                <a href="<?php echo esc_url( get_permalink( $course_id ) ); ?>" class="hub-btn hub-btn-outline">
-                    <?php echo $enrolled ? 'Enter Course' : 'View Program'; ?> →
-                </a>
-            </div>
-        </div>
-        <?php endforeach; ?>
-
-        <?php if ( ! $all_courses ) : ?>
-            <p>No courses have been published yet.</p>
-        <?php endif; ?>
-    </div>
-</section>
+<?php illiana_render_course_catalog( array(
+    'heading' => 'Your Programs',
+    'user_id' => $user_id,
+) ); ?>
 
 </main>
 
